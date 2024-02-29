@@ -3,23 +3,28 @@ import pyautogui
 import keyboard
 import time
 
-def autotype_from_clipboard(delay=0.1):
-    # Wait a brief moment to ensure the keyboard shortcut doesn't interfere with the typing
-    time.sleep(delay)
-    
-    # Fetch the text from the clipboard
-    text = pyperclip.paste()
-    
-    # Type out the text
-    pyautogui.write(text, interval=0.01)
+def type_special_character(char):
+    # Add more elif clauses here for other special characters if needed.
+    if char == '@':
+        pyperclip.copy("@")
+        pyautogui.hotkey("ctrl", "v")
+    else:
+        pyautogui.typewrite(char, interval=0.1)  # Fallback for characters that don't need special handling
 
-def on_triggered(event):
+def autotype_from_clipboard(delay=0.3):
+    time.sleep(delay)  # Brief delay
+    text = pyperclip.paste()  # Fetch clipboard content
+
+    for char in text:
+        type_special_character(char)
+
+def on_triggered():
     print("Key combination pressed, starting autotype...")
     autotype_from_clipboard()
 
 if __name__ == "__main__":
-    # Listen for the specific key combination (Ctrl+Shift+V)
-    keyboard.add_hotkey('ctrl+shift+t', on_triggered)
-    
-    print("Listening for Ctrl+Shift+T. Press ESC to stop.")
+    # Setup hotkey
+    keyboard.add_hotkey('ctrl+alt+v', on_triggered)
+
+    print("Press Ctrl+Alt+V to autotype. Press ESC to stop.")
     keyboard.wait('esc')
