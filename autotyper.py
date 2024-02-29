@@ -9,7 +9,7 @@ def type_special_character(char):
         pyperclip.copy("@")
         pyautogui.hotkey("ctrl", "v")
     else:
-        pyautogui.typewrite(char, interval=0.1)  # Fallback for characters that don't need special handling
+        pyautogui.typewrite(char, interval=0.05)  # Fallback for characters that don't need special handling
 
 def autotype_from_clipboard(delay=0.3):
     time.sleep(delay)  # Brief delay
